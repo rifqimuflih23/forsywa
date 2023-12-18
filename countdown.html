@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Fira Sans';
+            text-align: center;
+            padding: 50px;
+            display: flex;
+            flex-direction: column; /* Align items in a column */
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+
+        #countdown {
+            font-size: 2em;
+            font-weight: normal;
+            color: #333;
+        }
+
+        #buttonContainer {
+            margin-top: 20px;
+        }
+
+        #redirectButton {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            /* Disable the button by default */
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        #candle {
+            position: absolute;
+            bottom: 0;
+            width: 20px;
+            height: 50px;
+            background-color: #ffcc00;
+            border-radius: 5px;
+            animation: flame 1s infinite alternate;
+        }
+
+        @keyframes flame {
+            from {
+                box-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
+            }
+            to {
+                box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+            }
+        }
+    </style>
+    <title>Birthday Countdown</title>
+</head>
+<body>
+
+    <div>
+        <h1>Sywa's Birthday</h1>
+        <div id="countdown"></div>
+        <div id="buttonContainer">
+            <button id="redirectButton">Go to Countdown Page</button>
+        </div>
+        <!-- Candle Effect -->
+        <div id="candle"></div>
+    </div>
+
+    <script>
+        let countdownInterval;
+
+        // Set the date of your birthday
+        const birthdayDate = new Date('2023-12-30T00:00:00');
+
+        function updateCountdown() {
+            const currentDate = new Date();
+            const difference = birthdayDate - currentDate;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+                // Enable the button if the countdown is finished
+                if (difference <= 0) {
+                    document.getElementById('redirectButton').style.pointerEvents = 'auto';
+                    document.getElementById('redirectButton').style.opacity = '1';
+                }
+            } else {
+                document.getElementById('countdown').innerHTML = 'Happy Birthday!';
+                clearInterval(countdownInterval);
+            }
+        }
+
+        // Update the countdown every second
+        countdownInterval = setInterval(updateCountdown, 1000);
+
+        // Initial call to set the countdown when the page loads
+        updateCountdown();
+
+        // Add event listener to the button for redirection
+        document.getElementById('redirectButton').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+    </script>
+
+</body>
+</html>
